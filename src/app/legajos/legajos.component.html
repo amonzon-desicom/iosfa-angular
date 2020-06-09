@@ -1,0 +1,46 @@
+<h2>Legajos</h2>
+
+
+<div [hidden]="hideForm">
+    <form role="form" #LegajoForm="ngForm">
+        <div>
+            <label for="legajo">Legajo:</label>
+            <input type="text" [(ngModel)]="model.LegLegajo" name="LegLegajo">
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input type="text" [(ngModel)]="model.LegEMail" name="LegEMail">
+        </div>
+
+        <div>
+            <label for="Cuil">Cuil:</label>
+            <input type="text" [(ngModel)]="model.LegCuil" name="LegCuil">
+        </div>
+        <div>
+            <button (click)="hideList=false;hideForm=true">Salir</button>
+        </div>
+    </form>
+</div>
+<div  [hidden]="hideList">
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Legajo</th>
+            <th>Email</th>
+            <th>Cuil</th>
+            <th>Estado</th>
+            <th></th>
+       </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor = "let legajo of legajos">
+            <td>{{legajo.LegLegajo}}</td>
+            <td>{{legajo.LegEMail}}</td>
+            <td>{{legajo.LegCuil}}</td>
+            <td>{{legajo.LegEstado}}</td>
+            <td><button (click)="editLegajo(legajo)">Editar</button></td>
+        </tr>
+    </tbody>
+</table>
+</div>
