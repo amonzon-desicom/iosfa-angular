@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import { Legajo } from './legajo';
+import { environment } from '../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+
+  env: any = environment;
 
   constructor(private http: HttpClient) { }
 
@@ -14,14 +17,21 @@ export class ApiService {
 
   public getLegajos = (): Observable<Object> => {
 
-    return this.http.get('http://lade.me/api/legajos');
+    return this.http.get(this.env.api_base+ 'legajos');
   };
 
-  public getLegajo = (): Observable<Object> => {
+  public getLegajo = (id:string): Observable<Object> => {
 
-    return this.http.get('http://lade.me/api/legajos/3071429214100000105');
+    return this.http.get(this.env.api_base+ 'legajos/'+id);
   };
 
+  public updateLegajo = (legajo: Legajo): Observable<Object> => {
+    return this.http.put(this.env.api_base+ 'legajos',legajo,{headers:{'Content-Type':'application/json'}});
+  };
+
+  public insertLegajo = (legajo: Legajo): Observable<Object> => {
+    return this.http.post(this.env.api_base+ 'legajos',legajo,{headers:{'Content-Type':'application/json'}});
+  };
 
 
 }

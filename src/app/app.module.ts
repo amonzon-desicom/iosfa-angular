@@ -6,6 +6,7 @@ import { LegajosComponent } from './legajos/legajos.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ApiService } from './api.service';
 import {HttpClientModule} from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

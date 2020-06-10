@@ -1,46 +1,91 @@
-<h2>Legajos</h2>
-
-
-<div [hidden]="hideForm">
-    <form role="form" #LegajoForm="ngForm">
-        <div>
-            <label for="legajo">Legajo:</label>
-            <input type="text" [(ngModel)]="model.LegLegajo" name="LegLegajo">
-        </div>
-
-        <div>
-            <label for="email">Email:</label>
-            <input type="text" [(ngModel)]="model.LegEMail" name="LegEMail">
-        </div>
-
-        <div>
-            <label for="Cuil">Cuil:</label>
-            <input type="text" [(ngModel)]="model.LegCuil" name="LegCuil">
-        </div>
-        <div>
-            <button (click)="hideList=false;hideForm=true">Salir</button>
-        </div>
-    </form>
+<div class="row">
+    <div class="col"><h2>Legajos</h2></div>
+    <div class="col">
+        <button class="btn btn-success" (click)="addForm()">Nuevo</button>
+    </div>
 </div>
-<div  [hidden]="hideList">
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Legajo</th>
-            <th>Email</th>
-            <th>Cuil</th>
-            <th>Estado</th>
-            <th></th>
-       </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor = "let legajo of legajos">
-            <td>{{legajo.LegLegajo}}</td>
-            <td>{{legajo.LegEMail}}</td>
-            <td>{{legajo.LegCuil}}</td>
-            <td>{{legajo.LegEstado}}</td>
-            <td><button (click)="editLegajo(legajo)">Editar</button></td>
-        </tr>
-    </tbody>
-</table>
+<div class="container">
+    <div class="row">
+      <div class="col">
+
+
+            <form role="form" #LegajoForm="ngForm">
+
+            <div [hidden]="hideForm">
+                <div [hidden]="!alta">          
+                    <label for="codogo">Codigo:</label>
+                    <input class="form-control" type="text" [(ngModel)]="model.IDCodigo" name="IDCodigo">
+                </div>
+
+                <div>          
+                    <label for="legajo">Legajo:</label>
+                    <input class="form-control" type="text" [(ngModel)]="model.LegLegajo" name="LegLegajo">
+                </div>
+
+
+                <div>
+                    <label for="Cuil">Cuil:</label>
+                    <input class="form-control" type="text" [(ngModel)]="model.LegCuil" name="LegCuil">
+                </div>
+       
+                <div>          
+                    <label for="fechaNacimiento">Fecha Nacimiento:</label>
+                    <input class="form-control" type="text" [(ngModel)]="model.LegFechaNacimiento" name="LegFechaNacimiento">
+                </div>
+
+                <div>
+                    <label for="email">Email:</label>
+                    <input class="form-control" type="text" [(ngModel)]="model.LegEMail" name="LegEMail">
+                </div>
+                <div>
+                    <label for="estado">Estado:</label>
+                    <input class="form-control" type="text" [(ngModel)]="model.LegEstado" name="LegEstado">
+                </div>
+
+                <div class="form">
+                    <button [hidden]="alta" class="btn btn-dark" (click)="updateLegajo()">Guardar</button>
+                    <button [hidden]="!alta" class="btn btn-primary" (click)="insertLegajo()">Guardar</button>
+                    <button class="btn btn-danger" (click)="hideList=false;hideForm=true">Salir</button>
+                </div> 
+            </div>
+            </form>
+
+        </div>
+    </div>
+ 
+
+<div class="row">
+    <div class="col">
+        <div  [hidden]="hideList">
+            <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Legajo</th>
+                    <th>Email</th>
+                    <th>Cuil</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor = "let legajo of legajos | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize ">
+                    <td>{{legajo.LegLegajo}}</td>
+                    <td>{{legajo.LegEMail}}</td>
+                    <td>{{legajo.LegCuil}}</td>
+                    <td>{{legajo.LegEstado}}</td>
+                    <td><button (click)="editLegajo(legajo)">Editar</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="legajos.length"
+                    [maxSize]=10></ngb-pagination>
+                    
+            </tfoot>
+            </table> 
+        </div>
+    </div>
+</div>
 </div>

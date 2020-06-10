@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Legajo } from '../legajo';
 //import { LEGAJOS } from '../db-legajos';
 import { ApiService } from '../api.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-legajos',
@@ -9,7 +10,10 @@ import { ApiService } from '../api.service';
   styleUrls: ['./legajos.component.css']
 })
 export class LegajosComponent implements OnInit {
-
+  env = environment;
+  alta:any = true;
+  page:any = 1;
+  pageSize:any = 30;
   hideForm : any = true;
   hideList : any = false;
   legajos : Legajo[] ;
@@ -19,30 +23,68 @@ export class LegajosComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.api.getLegajos().subscribe(data =>{
-      console.log("1");
-      //console.log(data);
-      this.legajos = data['data'];
-    },error=>{
-      console.log(error);
-    });
+    this.getListado();
     
-console.log("2");
-console.log("3");
-console.log("4");
+
     //asigna de la base local
     //this.legajos = LEGAJOS;
 
    // this.model = new Legajo('','','','','','','','','');
   }
 
-  editLegajo(legajo:Legajo){
+  getListado(){
+    this.api.getLegajos().subscribe(data =>{
+ 
+      //console.log(data);
+      this.legajos = data['data'];
+    },error=>{
+      console.log(error);
+    });
+  }
 
+  editLegajo(legajo:Legajo){
+    this.alta = false;
+    this.api.getLegajo(legajo.LegAdministrador+legajo.IDCodigo).subscribe(result=>{
+      this.model = result['data'];
+    },error=>{
+      console.log(error);
+    });
+     
     this.hideForm = false;
     this.hideList = true;
-    console.log(legajo);
+      //console.log(legajo);
     
-    this.model = legajo;
+    //this.model = legajo;
+  }
+
+  updateLegajo(){
+    this.api.updateLegajo(this.model).subscribe(result=>{
+      console.log(result);
+      this.hideForm = true;
+      this.getListado();
+      this.hideList = false;
+    },error=>{
+      console.log(error);
+    });
+  }
+
+  addForm(){
+    this.alta = true;
+    this.model = {"LegAdministrador":this.env.LegAdministrador,"IDCodigo":"","LegLegajo":"","LegCuil":"","LegFechaNacimiento":null,"LegEMail":"","LegEstado":"0","LegIntentos":"0","LegToken":null};
+    this.hideForm = false;
+    this.hideList = true;
+  }
+
+  insertLegajo(){
+    console.log(this.model)
+    this.api.insertLegajo(this.model).subscribe(result=>{
+      console.log(result);
+      this.hideForm = true;
+      this.getListado();
+      this.hideList = false;
+    },error=>{
+      console.log(error);
+    });
   }
 
 }
