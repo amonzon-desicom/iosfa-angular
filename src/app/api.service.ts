@@ -33,5 +33,9 @@ export class ApiService {
     return this.http.post(this.env.api_base+ 'legajos',legajo,{headers:{'Content-Type':'application/json'}});
   };
 
+  public deleteLegajo = (id:string): Observable<Object> => {
+
+    return this.http.delete(this.env.api_base+ 'legajos/'+id);
+  };
 
 }

@@ -1,3 +1,7 @@
+<div class="div div-danger"  [hidden]="hideMessage" >
+    {{ErrMessage}}
+
+</div>
 <div class="row">
     <div class="col"><h2>Legajos</h2></div>
     <div class="col">
@@ -65,6 +69,7 @@
                     <th>Cuil</th>
                     <th>Estado</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -73,7 +78,12 @@
                     <td>{{legajo.LegEMail}}</td>
                     <td>{{legajo.LegCuil}}</td>
                     <td>{{legajo.LegEstado}}</td>
-                    <td><button (click)="editLegajo(legajo)">Editar</button></td>
+                    <td>
+                        <button class="btn btn-success" (click)="editLegajo(legajo)">Editar</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="deleteLegajo(legajo)">Eliminar</button>
+                    </td>
                 </tr>
             </tbody>
             <tfoot>

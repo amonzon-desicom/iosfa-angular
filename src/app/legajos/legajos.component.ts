@@ -10,13 +10,15 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./legajos.component.css']
 })
 export class LegajosComponent implements OnInit {
+  ErrMessage = "";
+  hideMessage = true;
   env = environment;
   alta:any = true;
   page:any = 1;
   pageSize:any = 30;
   hideForm : any = true;
   hideList : any = false;
-  legajos : Legajo[] ;
+  legajos : Legajo[] = [];
   model : Legajo = {"LegAdministrador":"","IDCodigo":"","LegLegajo":"","LegCuil":"","LegFechaNacimiento":null,"LegEMail":"","LegEstado":"0","LegIntentos":"0","LegToken":null};
   
   constructor(private api: ApiService) { }
@@ -77,14 +79,37 @@ export class LegajosComponent implements OnInit {
 
   insertLegajo(){
     console.log(this.model)
-    this.api.insertLegajo(this.model).subscribe(result=>{
-      console.log(result);
-      this.hideForm = true;
+
+
+    this.api.insertLegajo(this.model).subscribe(
+    result=>{
+        console.log(result);
+        this.hideForm = true;
+        this.getListado();
+        this.hideList = false;
+    },resError=>{
+      if(resError['error']['status']  == "10"){
+        this.ErrMessage= "clave duplicada";
+        this.hideMessage=false;
+      }
+      //console.log(resError['error']);
+
+    });
+  }
+
+  deleteLegajo(legajo:Legajo){
+
+    this.api.deleteLegajo(legajo.LegAdministrador+legajo.IDCodigo).subscribe(result=>{
+      this.ErrMessage= "Registro eliminado";
+      this.hideMessage=false;
       this.getListado();
-      this.hideList = false;
     },error=>{
       console.log(error);
     });
+     
+      //console.log(legajo);
+    
+    //this.model = legajo;
   }
 
 }
