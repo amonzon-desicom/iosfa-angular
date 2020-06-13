@@ -3,6 +3,9 @@ import { Legajo } from '../legajo';
 //import { LEGAJOS } from '../db-legajos';
 import { ApiService } from '../api.service';
 import { environment } from '../../environments/environment';
+import { ToastrService } from 'ngx-toastr';
+import { NgxConfirmBoxService } from 'ngx-confirm-box';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-legajos',
@@ -10,7 +13,17 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./legajos.component.css']
 })
 export class LegajosComponent implements OnInit {
+
+  bgColor           ='rgba(0,0,0,0.5)'; // overlay background color
+  confirmHeading    = '';
+  confirmContent    = "seguro que desea eliminar?";
+  confirmCanceltext = "Cancelar";
+  confirmOkaytext   = "Si";
+
+  variableLocal = "Variable Local";
+
   ErrMessage = "";
+  eliminar : any;
   hideMessage = true;
   env = environment;
   alta:any = true;
@@ -21,9 +34,13 @@ export class LegajosComponent implements OnInit {
   legajos : Legajo[] = [];
   model : Legajo = {"LegAdministrador":"","IDCodigo":"","LegLegajo":"","LegCuil":"","LegFechaNacimiento":null,"LegEMail":"","LegEstado":"0","LegIntentos":"0","LegToken":null};
   
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService,
+    private toastr:ToastrService,
+    private confirmBox: NgxConfirmBoxService,
+    private spiner:NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.variableLocal = localStorage.getItem("variableLocal");
 
     this.getListado();
     
@@ -34,14 +51,33 @@ export class LegajosComponent implements OnInit {
    // this.model = new Legajo('','','','','','','','','');
   }
 
+  setVariableLocal(parametro:string){
+    localStorage.setItem('variableLocal', parametro);
+    this.variableLocal=parametro;
+
+  }
+
   getListado(){
-    this.api.getLegajos().subscribe(data =>{
+
+    this.spiner.show();
+
+
+    this.api.getLegajos().subscribe (
+      data =>{
  
       //console.log(data);
       this.legajos = data['data'];
+     this.spiner.hide();
     },error=>{
       console.log(error);
-    });
+      this.spiner.hide();
+    }
+    
+    );
+
+
+
+    //this.spiner.hide();
   }
 
   editLegajo(legajo:Legajo){
@@ -89,24 +125,48 @@ export class LegajosComponent implements OnInit {
         this.hideList = false;
     },resError=>{
       if(resError['error']['status']  == "10"){
-        this.ErrMessage= "clave duplicada";
-        this.hideMessage=false;
+        
+        this.toastr.error ("Clave duplicada","Error!",{progressBar:true,positionClass:'toast-top-center',closeButton:true,disableTimeOut:true});
+        //this.ErrMessage= "clave duplicada";
+        //this.hideMessage=false;
       }
       //console.log(resError['error']);
 
     });
   }
 
+   confirmChange(showConfirm:boolean){
+      if(showConfirm){
+        console.log("eliminar");
+
+        this.api.deleteLegajo(this.eliminar.LegAdministrador+this.eliminar.IDCodigo).subscribe(result=>{
+          this.eliminar = null;
+          this.toastr.success("Registro Eliminado","Exito")
+          //this.ErrMessage= "Registro eliminado";
+          //this.hideMessage=false;
+          this.getListado();
+        },error=>{
+          console.log(error);
+        });
+      }
+  }
+
   deleteLegajo(legajo:Legajo){
 
+    this.eliminar = legajo;
+    console.log("box");
+    this.confirmBox.  show();
+/*
     this.api.deleteLegajo(legajo.LegAdministrador+legajo.IDCodigo).subscribe(result=>{
-      this.ErrMessage= "Registro eliminado";
-      this.hideMessage=false;
+      
+      this.toastr.success("Registro Eliminado","Exito")
+      //this.ErrMessage= "Registro eliminado";
+      //this.hideMessage=false;
       this.getListado();
     },error=>{
       console.log(error);
     });
-     
+     */
       //console.log(legajo);
     
     //this.model = legajo;

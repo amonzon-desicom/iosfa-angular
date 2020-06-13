@@ -1,7 +1,10 @@
-<div class="div div-danger"  [hidden]="hideMessage" >
-    {{ErrMessage}}
 
-</div>
+
+<span>{{variableLocal}}</span>
+<button (click)="setVariableLocal('variable Local original')">boton</button>
+<button (click)="setVariableLocal('variable Local modificada')">boton</button>
+<ngx-spinner></ngx-spinner><!-- <ngx-confirm-box (confirmEvt)="confirmChange($event)"></ngx-confirm-box> -->
+<ngx-confirm-box [bgColor]="bgColor" [confirmHeading]="confirmHeading" [confirmCanceltext]="confirmCanceltext" [confirmContent]= "confirmContent" [confirmOkaytext] = "confirmOkaytext" (confirmEvt)="confirmChange($event)"></ngx-confirm-box>
 <div class="row">
     <div class="col"><h2>Legajos</h2></div>
     <div class="col">

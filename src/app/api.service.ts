@@ -34,7 +34,8 @@ export class ApiService {
   };
 
   public deleteLegajo = (id:string): Observable<Object> => {
-
+    //let token:any = localStorage.getItem("token");
+    //return this.http.delete(this.env.api_base+ 'legajos/'+id,{headers:{'token':token}});
     return this.http.delete(this.env.api_base+ 'legajos/'+id);
   };
 
