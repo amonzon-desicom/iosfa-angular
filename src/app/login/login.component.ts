@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-login',
@@ -8,21 +10,31 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  model : any = {'username':"",password:""};
+
+  constructor(
+    private router:Router,
+    private toastr:ToastrService,
+    private api: ApiService
+    ) { }
 
   ngOnInit(): void {
+    localStorage.setItem("logueado","false");
   }
 
   login(){
+   // console.log(this.model);
     //user = model.user
     //pass = model.pass
-   // this.api.login(user,pass).suscribe(response=>{
-     // localStorage.setItem("token",response['token']);
-      localStorage.setItem("logueado","true");
-      this.router.navigate(['legajos']);
-   // },error=>{
-   //   this.toastr.error("error, clave invalida","Error");
-   // })
+   this.api.login(this.model.username,this.model.password).subscribe(
+     response=>{
+        //localStorage.setItem("token",response['token']);
+        console.log(response);
+        localStorage.setItem("logueado","true");
+        this.router.navigate(['/pages/legajos']);
+    },error=>{
+      this.toastr.error(error['error']['data'],"Error");
+    })
   }
 
 }

@@ -5,12 +5,17 @@ import { LegajosComponent } from './legajos/legajos.component';
 import { PaisComponent } from './pais/pais.component';
 import { LoginComponent } from './login/login.component';
 import { GuardComponent } from './guard/guard.component';
+import { PagesComponent } from './pages/pages.component';
 
 const routes: Routes = [
   {path: '',redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent },
-  {path: 'legajos', component: LegajosComponent,canActivate: [GuardComponent] },
-  {path: 'paises', component: PaisComponent ,canActivate: [GuardComponent]},
+  {path: 'logout', component: LoginComponent },
+  {path: 'pages', component: PagesComponent,canActivate: [GuardComponent], children:[
+      {path: 'legajos', component: LegajosComponent,canActivate: [GuardComponent] },
+      {path: 'paises', component: PaisComponent ,canActivate: [GuardComponent]},
+  ] },
+
 ];
 
 @NgModule({

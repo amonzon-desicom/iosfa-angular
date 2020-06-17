@@ -16,6 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { LoginComponent } from './login/login.component';
 import { GuardComponent } from './guard/guard.component';
+import { PagesComponent } from './pages/pages.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { GuardComponent } from './guard/guard.component';
     LegajosComponent,
     PaisComponent,
     LoginComponent,
-    GuardComponent
+    GuardComponent,
+    PagesComponent
   ],
   imports: [
     BrowserModule,

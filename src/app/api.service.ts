@@ -39,4 +39,8 @@ export class ApiService {
     return this.http.delete(this.env.api_base+ 'legajos/'+id);
   };
 
+  public login = (email:string,password:string): Observable<object> =>{
+    return this.http.post(this.env.api_base+ 'login',{"email":email,"password":password},{headers:{'Content-Type':'application/json'}});
+  }
+
 }
